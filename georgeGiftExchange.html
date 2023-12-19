@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gift Exchange</title>
+    <script>
+        function pairPeopleForGiftExchange() {
+            // JavaScript code here...
+            const people = ['KennethPak', 'Tom', 'SongSong', 'Ting', 'JiaLin', 'Egg', 'WilTon', 'KennethYam', 'George', 'Ed', 'Finchai', 'Maarco', 'Kwok'];
+            const countries = {
+                'KennethPak': 'HK',
+                'Tom': 'HK',
+                'SongSong': 'TW',
+                'Ting': 'TW',
+                'JiaLin': 'TW',
+                'Egg': 'TW',
+                'WilTon': 'CN',
+                'KennethYam': 'AU',
+                'George': 'AU',
+                'Ed': 'AU',
+                'Finchai': 'NZ',
+                'Maarco': 'US',
+                'Kwok': 'DE',
+            };
+
+            const pairs = [];
+
+            // Shuffle the array of people
+            const shuffledPeople = people.sort(() => Math.random() - 0.5);
+
+            // Pair people from different countries
+            for (let i = 0; i < shuffledPeople.length; i += 2) {
+                const person1 = shuffledPeople[i];
+                const person2 = shuffledPeople[i + 1];
+                const country1 = countries[person1];
+                const country2 = countries[person2];
+
+                // Ensure people are from different countries
+                if (country1 !== country2) {
+                    pairs.push({ person1, country1, person2, country2 });
+                } else {
+                    // If people are from the same country, swap with the next person
+                    const nextPerson = shuffledPeople.find(
+                        (p) => countries[p] !== country1 && !pairs.some((pair) => pair.person2 === p)
+                    );
+
+                    if (nextPerson) {
+                        pairs.push({ person1, country1, person2: nextPerson, country2: countries[nextPerson] });
+                    }
+                }
+            }
+
+            // Display the pairs on the page
+            const resultContainer = document.getElementById('result-container');
+            resultContainer.innerHTML = '<h2>Gift Exchange Pairs:</h2>';
+            pairs.forEach(pair => {
+                resultContainer.innerHTML += `<p>${pair.person1} (${pair.country1}) - ${pair.person2} (${pair.country2})</p>`;
+            });
+        }
+    </script>
+</head>
+<body>
+    <h1>Gift Exchange</h1>
+    <button onclick="pairPeopleForGiftExchange()">Generate Gift Exchange Pairs</button>
+    <div id="result-container"></div>
+</body>
+</html>
